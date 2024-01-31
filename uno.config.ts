@@ -6,7 +6,9 @@ export default defineConfig({
     presetUno(),
     presetWebFonts({
       provider: 'google',
-      fonts: {}
+      fonts: {
+        inika: 'Inika'
+      }
     }),
     presetIcons({
       cdn: 'https://esm.sh/',
