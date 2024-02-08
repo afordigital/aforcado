@@ -12,7 +12,7 @@ export const GameMenu = (props: Props) => {
   return (
     <div className='flex gap-x-8'>
       <Button
-        children='MENÚ'
+        children='MENU'
         bgColor='bg-[#5491FF]'
         hoverColor='hover:bg-[#6199FF]'
         onClick={() => updateGame(GAME_STATE.MENU)}
