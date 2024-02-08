@@ -1,16 +1,21 @@
 type Props = {
   writtenLetters: string[]
   chosenWord: string
+  bannedUsers: string[]
 }
 
 export const WrittenLetters = (props: Props) => {
-  const { writtenLetters, chosenWord } = props
+  const { writtenLetters, chosenWord, bannedUsers } = props
 
   return (
-    <div className='grid grid-cols-8 gap-y-4'>
-      {writtenLetters.map(letter => (
-        <>
-          {!chosenWord.includes(letter) && (
+    <div className='grid grid-cols-8 gap-y-4 justify-start'>
+      {writtenLetters
+        .filter(letter => !chosenWord.includes(letter))
+        .map((letter, index) => (
+          <div key={index} className='flex flex-col gap-y-4 items-center'>
+            <p className='bg-[#FFBB54] w-fit px-4 text-black rounded-md border-2 border-black'>
+              {bannedUsers[index]}
+            </p>
             <div className='flex flex-col'>
               <span
                 key={letter}
@@ -19,9 +24,8 @@ export const WrittenLetters = (props: Props) => {
                 {letter}
               </span>
             </div>
-          )}
-        </>
-      ))}
+          </div>
+        ))}
     </div>
   )
 }

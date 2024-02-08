@@ -7,7 +7,6 @@ import { GameMenu } from './GameMenu'
 import { WordSection } from './WordSection'
 import { TreeLifes } from './TreeLifes'
 import { WrittenLetters } from './WrittenLetters'
-import { BannedUsers } from './BannedUsers'
 
 type Props = {
   updateGame: (state: string) => void
@@ -86,6 +85,10 @@ export const GameContainer = (props: Props) => {
   }
 
   useEffect(() => {
+    if (isGameOver) {
+      setIsOpen(true)
+    }
+
     if (hasWon) {
       jsConfetti.addConfetti({
         emojis: ['🧦'],
@@ -94,8 +97,7 @@ export const GameContainer = (props: Props) => {
     }
 
     if (hasLost) {
-      updateGame(GAME_STATE.RESULTS)
-      setIsOpen(true)
+      // updateGame(GAME_STATE.RESULTS)
     }
   }, [hasWon, hasLost])
 
@@ -108,7 +110,7 @@ export const GameContainer = (props: Props) => {
     setWrittenLetters([])
     setLifes(USER_LIFES)
     setBannedUsers(BLACK_USERS)
-    updateGame(GAME_STATE.GAME)
+    setIsOpen(false)
   }
 
   const closeModal = () => {
@@ -132,9 +134,11 @@ export const GameContainer = (props: Props) => {
         />
       )}
 
-      <WrittenLetters writtenLetters={writtenLetters} chosenWord={chosenWord} />
-
-      <BannedUsers bannedUsers={bannedUsers} />
+      <WrittenLetters
+        writtenLetters={writtenLetters}
+        chosenWord={chosenWord}
+        bannedUsers={bannedUsers}
+      />
 
       <TreeLifes USER_LIFES={USER_LIFES} lifes={lifes} />
     </div>

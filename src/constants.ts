@@ -3,7 +3,7 @@ export const BLACK_USERS = []
 export const GAME_STATE = {
   MENU: 'MENU',
   GAME: 'GAME',
-  RESULTS: 'RESULTS'
+  OPTIONS: 'OPTIONS'
 }
 
 export const WORDS = [

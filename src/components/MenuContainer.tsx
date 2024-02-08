@@ -21,7 +21,10 @@ export const MenuContainer = (props: Props) => {
         >
           PLAY
         </button>
-        <button className='bg-[#D30040] hover:bg-[#F10049] w-fit text-3xl px-[75px] py-[15px] text-white border-4 border-black font-bold rounded-[12px] -rotate-1'>
+        <button
+          onClick={() => updateGame(GAME_STATE.OPTIONS)}
+          className='bg-[#D30040] hover:bg-[#F10049] w-fit text-3xl px-[75px] py-[15px] text-white border-4 border-black font-bold rounded-[12px] -rotate-1'
+        >
           OPTIONS
         </button>
       </div>
