@@ -68,7 +68,7 @@ export const WORDS = [
   'TypeScript',
   'ECMAScript',
   'Bucle',
-  'Programación',
+  'Programacion',
   'Observables',
   'RxJS',
   'HTTP',

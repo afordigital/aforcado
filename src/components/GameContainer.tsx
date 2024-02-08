@@ -34,8 +34,10 @@ export const GameContainer = (props: Props) => {
   const [writtenLetters, setWrittenLetters] = useState<string[]>([])
   const [chosenWord, setChosenWord] = useState<string>(chooseWord)
   const [bannedUsers, setBannedUsers] = useState<string[]>(BLACK_USERS)
+  const [guessUsers, setGuessUsers] = useState<string[]>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [lifes, setLifes] = useState<number>(USER_LIFES)
+  const [winner, setWinner] = useState<string | null>(null)
 
   const hasWon = chosenWord
     .split('')
@@ -57,11 +59,13 @@ export const GameContainer = (props: Props) => {
     client.on('message', async (channel, userState, message) => {
       const { username } = userState
 
+      if (isGameOver) return
+
       if (!username || bannedUsers.includes(username)) {
         return
       }
 
-      if (message.startsWith('!play ') && GAME_STATE.GAME && !isGameOver) {
+      if (message.startsWith('!play ')) {
         const letter = message.slice(6, 7).toUpperCase()
         const regex = /^[a-zA-ZñÑ]$/
 
@@ -69,6 +73,13 @@ export const GameContainer = (props: Props) => {
           addWrittenLetter(letter)
           validateLetter(letter, username)
         }
+      } else if (message.startsWith('!resolve ')) {
+        console.log(message)
+        const word = message.slice(9).toUpperCase()
+
+        if (word === chosenWord) {
+          winPlayer(username)
+        } else setBannedUsers(users => [...users, username])
       }
     })
 
@@ -77,10 +88,17 @@ export const GameContainer = (props: Props) => {
     }
   }, [writtenLetters, bannedUsers, hasWon, isGameOver])
 
+  const winPlayer = (winner: string) => {
+    setWrittenLetters(chosenWord.split(''))
+    setWinner(winner)
+  }
+
   const validateLetter = (letter: string, username: string) => {
     if (!chosenWord.includes(letter)) {
       setLifes(lifes => lifes - 1)
       setBannedUsers(users => [...users, username])
+    } else if (chosenWord.includes(letter) && !guessUsers.includes(username)) {
+      setGuessUsers(users => [...users, username])
     }
   }
 
@@ -126,11 +144,13 @@ export const GameContainer = (props: Props) => {
       {isOpen && (
         <Modal
           bannedUsers={bannedUsers}
+          guessUsers={guessUsers}
           hasLost={hasLost}
           chosenWord={chosenWord}
           updateGame={() => updateGame(GAME_STATE.MENU)}
           reloadGame={reestartGame}
           closeModal={closeModal}
+          winner={winner}
         />
       )}
 
